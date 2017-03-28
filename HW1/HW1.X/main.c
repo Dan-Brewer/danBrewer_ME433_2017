@@ -63,5 +63,15 @@ int main() {
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		  // remember the core timer runs at half the CPU speed
+        _CP0_SET_COUNT(0); //set count to zero 
+        if(LATAbits.LATA4 == 1){ //toggle LED
+            LATAbits.LATA4 = 0;
+        }
+        else{
+            LATAbits.LATA4 = 1;
+        }
+        while(_CP0_GET_COUNT() < 12000){ //wait 0.5 ms 
+            ; //do nothing
+        }
     }
 }
