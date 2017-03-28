@@ -73,5 +73,8 @@ int main() {
         while(_CP0_GET_COUNT() < 12000){ //wait 0.5 ms 
             ; //do nothing
         }
+        while(PORTBbits.RB4 == 0){ //while user button is pressed
+            LATAbits.LATA4 = 0; //turn off LED
+        }
     }
 }
