@@ -18330,6 +18330,18 @@ Holes are offset 0.005" to hold pins in place while soldering.
 <pin name="1.GND" x="-17.78" y="-5.08" length="middle" rot="R90"/>
 <pin name="P$3" x="17.78" y="-5.08" length="middle" rot="R90"/>
 </symbol>
+<symbol name="BUTTON">
+<pin name="1" x="-15.24" y="0" length="middle"/>
+<pin name="2" x="15.24" y="0" length="middle" rot="R180"/>
+<wire x1="-10.16" y1="0" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="10.16" y1="0" x2="-2.54" y2="0" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-7.62" x2="12.7" y2="10.16" width="0.254" layer="94"/>
+<wire x1="12.7" y1="10.16" x2="-12.7" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="10.16" x2="-12.7" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-7.62" x2="12.7" y2="-7.62" width="0.254" layer="94"/>
+<text x="-10.16" y="7.62" size="1.27" layer="94">&gt;NAME</text>
+<text x="0" y="7.62" size="1.27" layer="94">&gt;VALUE</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="R-US_" prefix="R" uservalue="yes">

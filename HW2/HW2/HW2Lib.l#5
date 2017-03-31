@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.5" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -38,7 +38,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
@@ -17437,6 +17437,13 @@ Holes are offset 0.005" to hold pins in place while soldering.
 <wire x1="-6" y1="-6" x2="-6" y2="6" width="0.127" layer="21"/>
 <text x="-5.08" y="3.81" size="1.27" layer="21">&gt;NAME</text>
 <text x="-5.08" y="1.27" size="1.27" layer="21">&gt;VALUE</text>
+</package>
+<package name="SLIDE_SWITCH">
+<pad name="2" x="0" y="0" drill="0.9"/>
+<pad name="1" x="-2" y="0" drill="0.9"/>
+<pad name="3" x="2" y="0" drill="0.9"/>
+<hole x="-4" y="0" drill="1.1"/>
+<hole x="4" y="0" drill="1.1"/>
 </package>
 </packages>
 <symbols>

@@ -14025,6 +14025,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="PICKIT3" library="HW2Lib" deviceset="CONN_06" device="LONGPADS"/>
 <part name="1" library="HW2Lib" deviceset="CONN_08" device="NO_SILK_FEMALE_PTH"/>
 <part name="2" library="HW2Lib" deviceset="CONN_08" device="NO_SILK_FEMALE_PTH"/>
+<part name="GND14" library="HW2Lib" deviceset="GND" device=""/>
+<part name="GND15" library="HW2Lib" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14065,6 +14067,8 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="PICKIT3" gate="G$1" x="25.4" y="68.58" rot="R180"/>
 <instance part="1" gate="G$1" x="10.16" y="-48.26" rot="R180"/>
 <instance part="2" gate="G$1" x="35.56" y="-50.8"/>
+<instance part="GND14" gate="1" x="5.08" y="-60.96"/>
+<instance part="GND15" gate="1" x="40.64" y="-60.96"/>
 </instances>
 <busses>
 </busses>
@@ -14128,6 +14132,14 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="U$2" gate="G$1" pin="3"/>
 <pinref part="GND13" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="1" gate="G$1" pin="8"/>
+<pinref part="GND14" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="2" gate="G$1" pin="1"/>
+<pinref part="GND15" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="VBUS" class="0">
@@ -14352,16 +14364,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="PICKIT3" gate="G$1" pin="3"/>
 <wire x1="20.32" y1="68.58" x2="15.24" y2="68.58" width="0.1524" layer="91"/>
 <label x="15.24" y="68.58" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="1" gate="G$1" pin="8"/>
-<wire x1="5.08" y1="-58.42" x2="0" y2="-58.42" width="0.1524" layer="91"/>
-<label x="-2.54" y="-58.42" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="2" gate="G$1" pin="1"/>
-<wire x1="40.64" y1="-58.42" x2="45.72" y2="-58.42" width="0.1524" layer="91"/>
-<label x="43.18" y="-58.42" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$10" class="0">

@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.5" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -17435,6 +17435,8 @@ Holes are offset 0.005" to hold pins in place while soldering.
 <wire x1="6" y1="6" x2="6" y2="-6" width="0.127" layer="21"/>
 <wire x1="6" y1="-6" x2="-6" y2="-6" width="0.127" layer="21"/>
 <wire x1="-6" y1="-6" x2="-6" y2="6" width="0.127" layer="21"/>
+<text x="-5.08" y="3.81" size="1.27" layer="21">&gt;NAME</text>
+<text x="-5.08" y="1.27" size="1.27" layer="21">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
@@ -25357,6 +25359,22 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <connect gate="G$1" pin="1.OSC1" pad="1"/>
 <connect gate="G$1" pin="2.GND" pad="2"/>
 <connect gate="G$1" pin="2.OSC2" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BUTTON">
+<gates>
+<gate name="G$1" symbol="BUTTON" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="BUTTON">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>

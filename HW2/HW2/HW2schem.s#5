@@ -14053,7 +14053,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="GND2" gate="1" x="-38.1" y="10.16"/>
 <instance part="GND3" gate="1" x="-45.72" y="10.16"/>
 <instance part="GND4" gate="1" x="-15.24" y="7.62"/>
-<instance part="GND5" gate="1" x="48.26" y="33.02"/>
+<instance part="GND5" gate="1" x="58.42" y="33.02"/>
 <instance part="GND6" gate="1" x="53.34" y="-5.08" rot="R90"/>
 <instance part="GND7" gate="1" x="-7.62" y="7.62" rot="R180"/>
 <instance part="GND8" gate="1" x="53.34" y="0" rot="R90"/>
@@ -14095,9 +14095,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
 <pinref part="U$1" gate="G$1" pin="27.AVSS"/>
-<wire x1="48.26" y1="35.56" x2="40.64" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="35.56" x2="40.64" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="GND5" gate="1" pin="GND"/>
-<junction x="48.26" y="35.56"/>
+<junction x="58.42" y="35.56"/>
+<wire x1="58.42" y1="35.56" x2="48.26" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="-"/>
