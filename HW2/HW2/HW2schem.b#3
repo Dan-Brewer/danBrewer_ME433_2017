@@ -631,19 +631,19 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="CONN-08193" x="43.18" y="45.72" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SF_ID" value="PRT-00587" x="43.18" y="45.72" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="LED1" library="HW2Lib" package="LED3MM" value="Green" x="31.75" y="2.54"/>
+<element name="LED1" library="HW2Lib" package="LED3MM" value="Green" x="22.86" y="2.54"/>
 <element name="LED2" library="HW2Lib" package="LED3MM" value="Red" x="7.62" y="2.54" rot="R180"/>
 <element name="PICKIT3" library="HW2Lib" package="1X06_LONGPADS" value="" x="2.54" y="30.48" rot="R270"/>
-<element name="R1" library="HW2Lib" package="0309/12" value="330" x="41.91" y="2.54" rot="R180"/>
+<element name="R1" library="HW2Lib" package="0309/12" value="330" x="33.02" y="7.62" rot="R270"/>
 <element name="R2" library="HW2Lib" package="0309/12" value="330" x="2.54" y="8.89" rot="R270"/>
 <element name="R3" library="HW2Lib" package="0309/12" value="10k" x="17.78" y="7.62" rot="R270"/>
 <element name="R4" library="HW2Lib" package="0309/12" value="10k" x="8.89" y="35.56" rot="R270"/>
 <element name="U$1" library="HW2Lib" package="DIL28-3" value="PIC32" x="25.4" y="24.13" rot="R270"/>
 <element name="U$2" library="HW2Lib" package="SLIDE_SWITCH" value="SLIDE_SWITCH" x="29.21" y="46.99"/>
-<element name="U$3" library="HW2Lib" package="RESONATOR" value="RESONATOR" x="45.72" y="15.24"/>
-<element name="U$4" library="HW2Lib" package="TO92" value="MCP1072" x="12.7" y="19.05" rot="R90"/>
-<element name="U$5" library="HW2Lib" package="BUTTON" value="BUTTON" x="5.08" y="46.355"/>
-<element name="U$6" library="HW2Lib" package="BUTTON" value="BUTTON" x="14.645" y="46.355"/>
+<element name="U$3" library="HW2Lib" package="RESONATOR" value="RESONATOR" x="43.18" y="20.32" rot="R90"/>
+<element name="U$4" library="HW2Lib" package="TO92" value="MCP1072" x="16.51" y="45.72"/>
+<element name="U$5" library="HW2Lib" package="BUTTON" value="BUTTON" x="43.18" y="36.195" rot="R180"/>
+<element name="U$6" library="HW2Lib" package="BUTTON" value="BUTTON" x="4.405" y="46.355" rot="R180"/>
 </elements>
 <signals>
 <signal name="GND">
@@ -660,67 +660,45 @@ design rules under a new name.</description>
 <contactref element="R1" pad="1"/>
 <contactref element="U$6" pad="1"/>
 <contactref element="U$3" pad="2"/>
-<contactref element="U$2" pad="3"/>
 <contactref element="1" pad="8"/>
 <contactref element="2" pad="1"/>
-<wire x1="12.7" y1="17.78" x2="17.78" y2="17.78" width="0" layer="19" extent="1-1"/>
-<wire x1="8.89" y1="19.05" x2="12.7" y2="17.78" width="0" layer="19" extent="1-1"/>
-<wire x1="31.21" y1="46.99" x2="8.89" y2="19.05" width="0" layer="19" extent="1-1"/>
-<wire x1="29.21" y1="17.78" x2="31.21" y2="46.99" width="0" layer="19" extent="1-1"/>
-<wire x1="45.72" y1="15.24" x2="29.21" y2="17.78" width="0" layer="19" extent="1-1"/>
-<wire x1="48.26" y1="2.54" x2="45.72" y2="15.24" width="0" layer="19" extent="1-1"/>
-<wire x1="43.18" y1="27.94" x2="45.72" y2="15.24" width="0" layer="19" extent="1-1"/>
+<contactref element="PICKIT3" pad="3"/>
+<wire x1="45.68" y1="36.195" x2="44.78" y2="48.22" width="0" layer="19" extent="1-1"/>
+<wire x1="43.18" y1="27.94" x2="45.68" y2="36.195" width="0" layer="19" extent="1-1"/>
 <wire x1="36.83" y1="25.4" x2="43.18" y2="27.94" width="0" layer="19" extent="1-1"/>
-<wire x1="7.62" y1="6.35" x2="36.83" y2="25.4" width="0" layer="19" extent="1-1"/>
-<wire x1="29.21" y1="38.1" x2="43.18" y2="27.94" width="0" layer="19" extent="1-1"/>
-<wire x1="2.54" y1="15.24" x2="7.62" y2="6.35" width="0" layer="19" extent="1-1"/>
-<wire x1="33.02" y1="17.78" x2="2.54" y2="15.24" width="0" layer="19" extent="1-1"/>
-<wire x1="12.145" y1="46.355" x2="29.21" y2="38.1" width="0" layer="19" extent="1-1"/>
-<wire x1="2.58" y1="46.355" x2="12.145" y2="46.355" width="0" layer="19" extent="1-1"/>
-<wire x1="44.78" y1="48.22" x2="2.58" y2="46.355" width="0" layer="19" extent="1-1"/>
+<wire x1="43.18" y1="20.32" x2="43.18" y2="27.94" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="17.78" x2="36.83" y2="25.4" width="0" layer="19" extent="1-1"/>
+<wire x1="29.21" y1="17.78" x2="33.02" y2="17.78" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="13.97" x2="33.02" y2="17.78" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="17.78" x2="29.21" y2="17.78" width="0" layer="19" extent="1-1"/>
+<wire x1="8.89" y1="19.05" x2="17.78" y2="17.78" width="0" layer="19" extent="1-1"/>
+<wire x1="2.54" y1="15.24" x2="8.89" y2="19.05" width="0" layer="19" extent="1-1"/>
+<wire x1="2.54" y1="25.4" x2="8.89" y2="19.05" width="0" layer="19" extent="1-1"/>
+<wire x1="7.62" y1="6.35" x2="2.54" y2="15.24" width="0" layer="19" extent="1-1"/>
+<wire x1="29.21" y1="38.1" x2="36.83" y2="25.4" width="0" layer="19" extent="1-1"/>
+<wire x1="15.24" y1="45.72" x2="29.21" y2="38.1" width="0" layer="19" extent="1-1"/>
+<wire x1="6.905" y1="46.355" x2="15.24" y2="45.72" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VBUS">
-<contactref element="C1" pad="1"/>
-<contactref element="U$2" pad="2"/>
-<contactref element="U$4" pad="2"/>
 <contactref element="U$1" pad="15"/>
-<contactref element="2" pad="2"/>
-<wire x1="29.21" y1="46.99" x2="10.795" y2="19.05" width="0" layer="19" extent="1-1"/>
-<wire x1="29.21" y1="7.62" x2="29.21" y2="46.99" width="0" layer="19" extent="1-1"/>
-<wire x1="33.02" y1="20.32" x2="10.795" y2="19.05" width="0" layer="19" extent="1-1"/>
-<wire x1="36.83" y1="22.86" x2="33.02" y2="20.32" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VDD">
-<contactref element="U$4" pad="3"/>
-<contactref element="C2" pad="1"/>
-<contactref element="LED2" pad="A"/>
-<contactref element="R4" pad="2"/>
 <contactref element="U$1" pad="23"/>
-<contactref element="R3" pad="2"/>
 <contactref element="U$1" pad="13"/>
 <contactref element="C3" pad="2"/>
 <contactref element="C4" pad="1"/>
 <contactref element="U$1" pad="28"/>
-<contactref element="PICKIT3" pad="2"/>
-<contactref element="1" pad="7"/>
-<wire x1="12.7" y1="20.32" x2="17.78" y2="20.32" width="0" layer="19" extent="1-1"/>
-<wire x1="8.89" y1="29.21" x2="12.7" y2="20.32" width="0" layer="19" extent="1-1"/>
-<wire x1="6.35" y1="19.05" x2="8.89" y2="29.21" width="0" layer="19" extent="1-1"/>
-<wire x1="13.97" y1="3.81" x2="6.35" y2="19.05" width="0" layer="19" extent="1-1"/>
-<wire x1="17.78" y1="1.27" x2="13.97" y2="3.81" width="0" layer="19" extent="1-1"/>
-<wire x1="8.89" y1="2.54" x2="8.89" y2="29.21" width="0" layer="19" extent="1-1"/>
-<wire x1="2.54" y1="27.94" x2="8.89" y2="2.54" width="0" layer="19" extent="1-1"/>
-<wire x1="7.62" y1="8.89" x2="2.54" y2="27.94" width="0" layer="19" extent="1-1"/>
-<wire x1="29.21" y1="40.64" x2="7.62" y2="8.89" width="0" layer="19" extent="1-1"/>
 <wire x1="29.21" y1="27.94" x2="29.21" y2="40.64" width="0" layer="19" extent="1-1"/>
 <wire x1="21.59" y1="10.16" x2="29.21" y2="27.94" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="3.81" x2="21.59" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="6.35" y1="19.05" x2="13.97" y2="3.81" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$2">
 <contactref element="R4" pad="1"/>
 <contactref element="U$5" pad="2"/>
 <contactref element="U$1" pad="1"/>
 <contactref element="PICKIT3" pad="1"/>
-<wire x1="7.58" y1="46.355" x2="21.59" y2="40.64" width="0" layer="19" extent="1-1"/>
+<wire x1="40.68" y1="36.195" x2="21.59" y2="40.64" width="0" layer="19" extent="1-1"/>
 <wire x1="8.89" y1="41.91" x2="21.59" y2="40.64" width="0" layer="19" extent="1-1"/>
 <wire x1="2.54" y1="30.48" x2="8.89" y2="41.91" width="0" layer="19" extent="1-1"/>
 </signal>
@@ -752,45 +730,43 @@ design rules under a new name.</description>
 <signal name="N$4">
 <contactref element="LED1" pad="K"/>
 <contactref element="R1" pad="2"/>
-<wire x1="35.56" y1="2.54" x2="33.02" y2="2.54" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="1.27" x2="24.13" y2="2.54" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="A4">
 <contactref element="U$1" pad="12"/>
 <contactref element="LED1" pad="A"/>
 <contactref element="1" pad="6"/>
-<wire x1="30.48" y1="2.54" x2="17.78" y2="22.86" width="0" layer="19" extent="1-1"/>
-<wire x1="21.59" y1="12.7" x2="30.48" y2="2.54" width="0" layer="19" extent="1-1"/>
+<wire x1="21.59" y1="2.54" x2="17.78" y2="22.86" width="0" layer="19" extent="1-1"/>
+<wire x1="21.59" y1="12.7" x2="21.59" y2="2.54" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="B4">
 <contactref element="U$6" pad="2"/>
 <contactref element="R3" pad="1"/>
 <contactref element="U$1" pad="11"/>
 <contactref element="1" pad="5"/>
-<wire x1="21.59" y1="15.24" x2="17.145" y2="46.355" width="0" layer="19" extent="1-1"/>
+<wire x1="21.59" y1="15.24" x2="1.905" y2="46.355" width="0" layer="19" extent="1-1"/>
 <wire x1="17.78" y1="13.97" x2="21.59" y2="15.24" width="0" layer="19" extent="1-1"/>
 <wire x1="17.78" y1="25.4" x2="17.78" y2="13.97" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="OSC1">
 <contactref element="U$3" pad="1"/>
 <contactref element="U$1" pad="9"/>
-<wire x1="48.22" y1="15.24" x2="21.59" y2="20.32" width="0" layer="19" extent="1-1"/>
+<wire x1="43.18" y1="22.82" x2="21.59" y2="20.32" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="OSC2">
 <contactref element="U$3" pad="3"/>
 <contactref element="U$1" pad="10"/>
-<wire x1="43.22" y1="15.24" x2="21.59" y2="17.78" width="0" layer="19" extent="1-1"/>
+<wire x1="43.18" y1="17.82" x2="21.59" y2="17.78" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$7">
 <contactref element="J1" pad="VBUS"/>
-<contactref element="U$2" pad="1"/>
-<wire x1="27.21" y1="46.99" x2="41.58" y2="48.22" width="0" layer="19" extent="1-1"/>
+<contactref element="U$2" pad="2"/>
+<wire x1="29.21" y1="46.99" x2="41.58" y2="48.22" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VSS">
 <contactref element="C3" pad="1"/>
 <contactref element="U$1" pad="8"/>
-<contactref element="PICKIT3" pad="3"/>
-<wire x1="21.59" y1="22.86" x2="13.97" y2="6.35" width="0" layer="19" extent="1-1"/>
-<wire x1="2.54" y1="25.4" x2="13.97" y2="6.35" width="0" layer="19" extent="1-1"/>
+<wire x1="13.97" y1="6.35" x2="21.59" y2="22.86" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$10">
 <contactref element="U$1" pad="4"/>
@@ -851,6 +827,30 @@ design rules under a new name.</description>
 <contactref element="U$1" pad="16"/>
 <contactref element="2" pad="3"/>
 <wire x1="33.02" y1="22.86" x2="29.21" y2="10.16" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="+5V">
+<contactref element="C1" pad="1"/>
+<contactref element="U$4" pad="2"/>
+<contactref element="U$2" pad="3"/>
+<contactref element="2" pad="2"/>
+<wire x1="16.51" y1="47.625" x2="31.21" y2="46.99" width="0" layer="19" extent="1-1"/>
+<wire x1="36.83" y1="22.86" x2="31.21" y2="46.99" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="20.32" x2="36.83" y2="22.86" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="+3V3">
+<contactref element="U$4" pad="3"/>
+<contactref element="C2" pad="1"/>
+<contactref element="LED2" pad="A"/>
+<contactref element="1" pad="7"/>
+<contactref element="R4" pad="2"/>
+<contactref element="R3" pad="2"/>
+<contactref element="PICKIT3" pad="2"/>
+<wire x1="8.89" y1="29.21" x2="17.78" y2="45.72" width="0" layer="19" extent="1-1"/>
+<wire x1="2.54" y1="27.94" x2="8.89" y2="29.21" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="20.32" x2="8.89" y2="29.21" width="0" layer="19" extent="1-1"/>
+<wire x1="7.62" y1="8.89" x2="17.78" y2="20.32" width="0" layer="19" extent="1-1"/>
+<wire x1="8.89" y1="2.54" x2="7.62" y2="8.89" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="1.27" x2="8.89" y2="2.54" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
