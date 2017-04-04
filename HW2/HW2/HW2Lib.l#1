@@ -18551,11 +18551,11 @@ Holes are offset 0.005" to hold pins in place while soldering.
 <wire x1="-1.27" y1="7.62" x2="0" y2="7.62" width="0.6096" layer="94"/>
 <text x="-5.08" y="-7.366" size="1.778" layer="96" font="vector">&gt;VALUE</text>
 <text x="-5.08" y="10.668" size="1.778" layer="95" font="vector">&gt;NAME</text>
-<pin name="1" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="2" x="5.08" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="3" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="4" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="5" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="5.B1" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="4.B0" x="5.08" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="3.GND" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="2.VDD" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1.MCLR" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -25694,6 +25694,13 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </gates>
 <devices>
 <device name="" package="PICKIT3">
+<connects>
+<connect gate="G$1" pin="1.MCLR" pad="5"/>
+<connect gate="G$1" pin="2.VDD" pad="4"/>
+<connect gate="G$1" pin="3.GND" pad="3"/>
+<connect gate="G$1" pin="4.B0" pad="2"/>
+<connect gate="G$1" pin="5.B1" pad="1"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>

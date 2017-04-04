@@ -9406,11 +9406,11 @@ Holes are offset 0.005" to hold pins in place during soldering.
 <wire x1="-1.27" y1="7.62" x2="0" y2="7.62" width="0.6096" layer="94"/>
 <text x="-5.08" y="-7.366" size="1.778" layer="96" font="vector">&gt;VALUE</text>
 <text x="-5.08" y="10.668" size="1.778" layer="95" font="vector">&gt;NAME</text>
-<pin name="1" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="2" x="5.08" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="3" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="4" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="5" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="5.B1" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="4.B0" x="5.08" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="3.GND" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="2.VDD" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1.MCLR" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
 </symbol>
 <symbol name="CONN_08">
 <description>&lt;h3&gt; 8 Pin Connection&lt;/h3&gt;</description>
@@ -12936,11 +12936,11 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <devices>
 <device name="" package="PICKIT3">
 <connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
-<connect gate="G$1" pin="5" pad="5"/>
+<connect gate="G$1" pin="1.MCLR" pad="5"/>
+<connect gate="G$1" pin="2.VDD" pad="4"/>
+<connect gate="G$1" pin="3.GND" pad="3"/>
+<connect gate="G$1" pin="4.B0" pad="2"/>
+<connect gate="G$1" pin="5.B1" pad="1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -13194,7 +13194,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <wire x1="20.32" y1="68.58" x2="0" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="GND13" gate="1" pin="GND"/>
-<pinref part="U$7" gate="G$1" pin="3"/>
+<pinref part="U$7" gate="G$1" pin="3.GND"/>
 </segment>
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
@@ -13221,7 +13221,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="20.32" y1="73.66" x2="-5.08" y2="73.66" width="0.1524" layer="91"/>
 <wire x1="-5.08" y1="73.66" x2="-5.08" y2="40.64" width="0.1524" layer="91"/>
 <junction x="-5.08" y="40.64"/>
-<pinref part="U$7" gate="G$1" pin="1"/>
+<pinref part="U$7" gate="G$1" pin="5.B1"/>
 <pinref part="R4" gate="G$1" pin="1"/>
 <junction x="-15.24" y="40.64"/>
 </segment>
@@ -13336,7 +13336,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="5.08" y1="25.4" x2="2.54" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="25.4" x2="2.54" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="66.04" x2="20.32" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="U$7" gate="G$1" pin="4"/>
+<pinref part="U$7" gate="G$1" pin="2.VDD"/>
 </segment>
 </net>
 <net name="N$11" class="0">
@@ -13345,7 +13345,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="5.08" y1="20.32" x2="0" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="0" y1="20.32" x2="0" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="0" y1="63.5" x2="20.32" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="U$7" gate="G$1" pin="5"/>
+<pinref part="U$7" gate="G$1" pin="1.MCLR"/>
 </segment>
 </net>
 <net name="A0" class="0">
@@ -13523,7 +13523,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <wire x1="20.32" y1="71.12" x2="-2.54" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="+3V5" gate="G$1" pin="+3V3"/>
-<pinref part="U$7" gate="G$1" pin="2"/>
+<pinref part="U$7" gate="G$1" pin="4.B0"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="13.VDD"/>
