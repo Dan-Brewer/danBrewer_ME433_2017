@@ -824,8 +824,7 @@
 <wire x1="42.5907" y1="6.68866875" x2="42.03275" y2="6.68866875" width="0.025" layer="200"/>
 <wire x1="42.03275" y1="6.68866875" x2="41.45066875" y2="5.67971875" width="0.025" layer="200"/>
 <wire x1="41.233090625" y1="6.39571875" x2="41.26865" y2="6.33221875" width="0.025" layer="200"/>
-<text x="22.86" y="1.27" size="1.016" layer="21" font="vector">Dan Brewer</text>
-<text x="32.385" y="1.27" size="1.016" layer="21" font="vector">4/4/17</text>
+<text x="39.37" y="1.27" size="0.6096" layer="21">soundcloud.com/hyraxe</text>
 </plain>
 <libraries>
 <library name="HW2Lib">

@@ -154,8 +154,16 @@
 <text x="3.175" y="26.035" size="1.016" layer="21">B3</text>
 <text x="3.175" y="23.495" size="1.016" layer="21">B4</text>
 <text x="3.175" y="20.955" size="1.016" layer="21">A4</text>
-<text x="3.175" y="18.415" size="1.016" layer="21">3v3</text>
+<text x="3.175" y="18.415" size="1.016" layer="21">3V3</text>
 <text x="3.175" y="15.875" size="1.016" layer="21">GND</text>
+<text x="45.085" y="33.655" size="1.016" layer="21">B15</text>
+<text x="45.085" y="31.115" size="1.016" layer="21">B14</text>
+<text x="45.085" y="28.575" size="1.016" layer="21">B13</text>
+<text x="45.085" y="26.035" size="1.016" layer="21">B9</text>
+<text x="45.085" y="23.495" size="1.016" layer="21">B8</text>
+<text x="45.085" y="20.955" size="1.016" layer="21">B7</text>
+<text x="45.085" y="18.415" size="1.016" layer="21">5V</text>
+<text x="45.085" y="15.875" size="1.016" layer="21">GND</text>
 </plain>
 <libraries>
 <library name="HW2Lib">
