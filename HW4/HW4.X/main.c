@@ -38,18 +38,19 @@
 
  //SPI Initialization function
 
-static char sT[100];
-static char wT[100];
+static unsigned char sT[100];
+static unsigned char wT[100];
 
 void SP1init(){
     //Set slave select to output 1
     TRISAbits.TRISA0 = 0; //set to output
+    ANSELAbits.ANSA0 = 0; //set to digital
     LATAbits.LATA0 = 1; //set to high
     
     //Initialize SPI1
     SPI1CON = 0;              // turn off the spi module and reset it
     SPI1BUF;                  // clear the rx buffer by reading from it
-    SPI1BRG = 0x1;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 1000;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0;  // clear the overflow bit
     SPI1CONbits.CKE = 1;      // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1;    // master operation
@@ -57,43 +58,43 @@ void SP1init(){
 }
     
     
-    //SPI Communication functions
-unsigned short packageData(unsigned short AB, char data){
+//SPI Communication functions
+unsigned short packageData(unsigned short AB, unsigned char data){
     unsigned short pdata = 0; //initialize packaged data
     pdata = (pdata | data) << 4; //add data to pdata
-    pdata = pdata | 0xF000; //set all special bits to 1 initially
+    pdata = pdata | 0x7000; //set all special bits to except AB 1 initially
     pdata = pdata | (AB << 15); //0 = A, 1 = B
     return pdata;
 }
     
-void writeSPI(char data){
-    LATAbits.LATA0 = 0; //CS needs to be set low to send data
-    SPI1BUF = data; //send data
+void writeSPI(unsigned char data){
+    SPI1BUF = data; //send data 
     while(!SPI1STATbits.SPIRBF){ //wait to receive data
         ;
     }
-    LATAbits.LATA0 = 0; //CS needs to be set high to finish sending data
+    SPI1BUF;
 }
     
-void setVoltage(char channel, char voltage){ //channel = 0 means A, 1 means B
+void setVoltage(unsigned short channel, unsigned char voltage){ //channel = 0 means A, 1 means B
+    LATAbits.LATA0 = 0; //CS needs to be set low to send data
     writeSPI((packageData(channel, voltage) & 0xFF00) >> 8); //send most significant byte
     writeSPI(packageData(channel, voltage) & 0x00FF); //send least significant byte
+    LATAbits.LATA0 = 1; //CS needs to be set high to finish sending data
+
 }
     
 //Signal initialization functions
 void *sineTable(void){
-    char sT[100];
     int i = 0;
     for(i; i < 100; i++){
-        sT[i] = (char)(63*sin(0.62832*((double)i)) + 64); //sketchy
+        sT[i] = (unsigned char)(120*sin(0.62832*((double)i)) + 120); //sketchy
     }
 }
     
 void *sawTable(void){
-    char wT[200];
     int i = 0;
     for(i; i < 200; i++){
-        wT[i] = 0.635*i; //sketchy
+        wT[i] = i; //sketchy
     }
 }
 
@@ -122,7 +123,7 @@ int main() {
 //    LATAbits.LATA4 = 1; //set A4 high to turn LED on at start
 //    
     //Assign functions to SPI pins
-    RPA0Rbits.RPA0R = 0x3; //Assign A0 to slave select (ss1)
+//    RPA0Rbits.RPA0R = 0x3; //Assign A0 to slave select (ss1)
     RPA1Rbits.RPA1R = 0x3; //Assign A1 to SDO1
     SDI1Rbits.SDI1R = 0x2; //Assign B1 to SDI1
     SP1init(); //initialize SPI1
