@@ -50,7 +50,7 @@ void SP1init(){
     //Initialize SPI1
     SPI1CON = 0;              // turn off the spi module and reset it
     SPI1BUF;                  // clear the rx buffer by reading from it
-    SPI1BRG = 1000;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 1;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0;  // clear the overflow bit
     SPI1CONbits.CKE = 1;      // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1;    // master operation
@@ -87,14 +87,14 @@ void setVoltage(unsigned short channel, unsigned char voltage){ //channel = 0 me
 void *sineTable(void){
     int i = 0;
     for(i; i < 100; i++){
-        sT[i] = (unsigned char)(120*sin(0.62832*((double)i)) + 120); //sketchy
+        sT[i] = (unsigned char)(127*sin(0.062832*((double)i)) + 127); //sketchy
     }
 }
     
 void *sawTable(void){
     int i = 0;
     for(i; i < 200; i++){
-        wT[i] = i; //sketchy
+        wT[i] = i*1.275; //sketchy
     }
 }
 
