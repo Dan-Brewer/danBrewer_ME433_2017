@@ -1,6 +1,6 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-
+#include <math.h> //for sine
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
 #pragma config JTAGEN = OFF // no jtag
@@ -36,9 +36,72 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+ //SPI Initialization function
+
+static char sT[100];
+static char wT[100];
+
+void SP1init(){
+    //Set slave select to output 1
+    TRISAbits.TRISA0 = 0; //set to output
+    LATAbits.LATA0 = 1; //set to high
+    
+    //Initialize SPI1
+    SPI1CON = 0;              // turn off the spi module and reset it
+    SPI1BUF;                  // clear the rx buffer by reading from it
+    SPI1BRG = 0x1;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
+    SPI1STATbits.SPIROV = 0;  // clear the overflow bit
+    SPI1CONbits.CKE = 1;      // data changes when clock goes from hi to lo (since CKP is 0)
+    SPI1CONbits.MSTEN = 1;    // master operation
+    SPI1CONbits.ON = 1;       // turn on  1
+}
+    
+    
+    //SPI Communication functions
+unsigned short packageData(unsigned short AB, char data){
+    unsigned short pdata = 0; //initialize packaged data
+    pdata = (pdata | data) << 4; //add data to pdata
+    pdata = pdata | 0xF000; //set all special bits to 1 initially
+    pdata = pdata | (AB << 15); //0 = A, 1 = B
+    return pdata;
+}
+    
+void writeSPI(char data){
+    LATAbits.LATA0 = 0; //CS needs to be set low to send data
+    SPI1BUF = data; //send data
+    while(!SPI1STATbits.SPIRBF){ //wait to receive data
+        ;
+    }
+    LATAbits.LATA0 = 0; //CS needs to be set high to finish sending data
+}
+    
+void setVoltage(char channel, char voltage){ //channel = 0 means A, 1 means B
+    writeSPI((packageData(channel, voltage) & 0xFF00) >> 8); //send most significant byte
+    writeSPI(packageData(channel, voltage) & 0x00FF); //send least significant byte
+}
+    
+//Signal initialization functions
+void *sineTable(void){
+    char sT[100];
+    int i = 0;
+    for(i; i < 100; i++){
+        sT[i] = (char)(63*sin(0.62832*((double)i)) + 64); //sketchy
+    }
+}
+    
+void *sawTable(void){
+    char wT[200];
+    int i = 0;
+    for(i; i < 200; i++){
+        wT[i] = 0.635*i; //sketchy
+    }
+}
+
 
 int main() {
-
+    sineTable(); //initialize sine table
+    sawTable(); //initialize saw table
+    
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -62,84 +125,26 @@ int main() {
     RPA0Rbits.RPA0R = 0x3; //Assign A0 to slave select (ss1)
     RPA1Rbits.RPA1R = 0x3; //Assign A1 to SDO1
     SDI1Rbits.SDI1R = 0x2; //Assign B1 to SDI1
-    
+    SP1init(); //initialize SPI1
     __builtin_enable_interrupts();
-
     
-    //SPI Initialization function
-    void SP1init(){
-    //Set slave select to output 1
-    TRISAbits.TRISA0 = 0; //set to output
-    LATAbits.LATA0 = 1; //set to high
-    
-    //Initialize SPI1
-    SPI1CON = 0;              // turn off the spi module and reset it
-    SPI1BUF;                  // clear the rx buffer by reading from it
-    SPI1BRG = 0x1;            // baud rate to 12 MHz [SPI4BRG = (48000000/(2*desired))-1]
-    SPI1STATbits.SPIROV = 0;  // clear the overflow bit
-    SPI1CONbits.CKE = 1;      // data changes when clock goes from hi to lo (since CKP is 0)
-    SPI1CONbits.MSTEN = 1;    // master operation
-    SPI1CONbits.ON = 1;       // turn on  1
-    }
-    
-    
-    //SPI Communication functions
-    char *packageData(char AB, char data[]){
-//        pdata[14] = 1; //Buffer
-//        pdata[13] = 1; // 1x gain
-//        pdata[12] = 1; //Active mode operation
-//        int i = 0;
-//        for(i; i < 7; i++){ //load data into pAdata
-//            pdata[4 + i] = data[i];
-//        }
- 
-        char pdata[16] = 0; //initialize packaged data
-        pdata = (pdata | data) << 4; //add data to pdata
-        pdata = pdata | 0xF000; //set all special bits to 1 initially
-        pdata[15] = AB; //0 = A, 1 = B
-        return pdata;
-    }
-    
-    void writeSPI(char data[]){
-        LATAbits.LATA0 = 0; //CS needs to be set low to send data
-        SPI1BUF = data[]; //send data
-        while(!SPI1STATbits.SPIRBF){ //wait to receive data
-            ;
-        }
-        LATAbits.LATA0 = 0; //CS needs to be set high to finish sending data
-    }
-    
-    void setVoltage(char channel, char voltage[]){ //channel = 0 means A, 1 means B
-        writeSPI((packageData(channel, voltage[]) & 0xFF00) >> 8); //send most significant byte
-        writeSPI(packageData(channel, voltage[]) & 0x00FF); //send least significant byte
-    }
-    
-    //Signal initialization functions
-    char *sineTable(void){
-        char sT[100] = 0;
-        int i = 0;
-        for(i; i < 100; i++){
-            sT[i] = 
-        }
-    }
-    
+     
+    int scounter = 0; //sine table counter
+    int wcounter = 0; //saw table counter
     while(1) {
-        
-        
-	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-		  // remember the core timer runs at half the CPU speed
-//        _CP0_SET_COUNT(0); //set count to zero 
-//        if(LATAbits.LATA4 == 1){ //toggle LED
-//            LATAbits.LATA4 = 0;
-//        }
-//        else{
-//            LATAbits.LATA4 = 1;
-//        }
-//        while(_CP0_GET_COUNT() < 12000){ //wait 0.5 ms 
-//            ; //do nothing
-//        }
-//        while(PORTBbits.RB4 == 0){ //while user button is pressed
-//            LATAbits.LATA4 = 0; //turn off LED
-//        }
+        setVoltage(0, sT[scounter]); //set voltage on A
+        setVoltage(1, wT[wcounter]); //set voltage on B
+        _CP0_SET_COUNT(0); //set count to zero
+        while(_CP0_GET_COUNT() < 24000){ //wait 1 ms 
+            ; //do nothing
+        }
+        scounter++;
+        wcounter++;
+        if(scounter > 99){ //reset at end of sine table
+            scounter = 0;
+        }
+        if(wcounter > 199){ //reset at end of saw table
+            wcounter = 0;
+        }
     }
 }
