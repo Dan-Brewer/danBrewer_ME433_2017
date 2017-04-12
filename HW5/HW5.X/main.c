@@ -57,13 +57,13 @@ void setExpander(char pin, char level){
     i2c_master_stop(); //make the stop bit
 }
 
-char getExpander(){
+unsigned char getExpander(){
     i2c_master_start(); //make the start bit
     i2c_master_send(((ADDRESS << 1) | 0)); //write
     i2c_master_send(0x09); //write to the GPIO register
     i2c_master_restart(); //make the restart bit
     i2c_master_send(((ADDRESS << 1) | 1)); //read
-    char r = i2c_master_recv(); //save the value returned
+    unsigned char r = i2c_master_recv(); //save the value returned
     i2c_master_ack(1); //make the ack so the slave knows we got it
     i2c_master_stop(); //make the stop bit
     return r;
@@ -99,16 +99,14 @@ int main() {
     __builtin_enable_interrupts();
     
     unsigned char r; //read byte from expander
-    setExpander(0, 0); //start LED pin low
-    setExpander(1, 1); //test
+    setExpander(0, 1); //start LED pin high
     while(1) {
-//	    r = getExpander();
-//        if(((r >> 7) & 0x01) == 0){
-//            setExpander(0, 1); //set LED pin high
-//        }
-//        else{
-//            setExpander(0, 0); //set LED pin low
-//        }
-        ;//test
+	    r = getExpander();
+        if(((r >> 7) & 0x01) == 0){
+            setExpander(0, 0); //set LED pin low
+        }
+        else{
+            setExpander(0, 1); //set LED pin high
+        }
     }
 }
