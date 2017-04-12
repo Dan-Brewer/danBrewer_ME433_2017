@@ -1,6 +1,6 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-#include<i2c_master_noint.h> //i2c functions
+#include "i2c_master_noint.h" //i2c functions
 
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
@@ -38,20 +38,20 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 //Constants
-const char ADDRESS = 0b0100000; //address of i2c2 I/O expander chip
+const char ADDRESS = 0x20; //address of i2c2 I/O expander chip
 
 void initExpander(){
     //Set IO for pins
     i2c_master_start(); //make the start bit
-    i2c_master_send((ADDRESS << 1) | 0); //write
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
     i2c_master_send(0x00); //write to the IODIR pin
-    i2c_master_send(0x07); //set G0-3 as inputs, G4-7 as outputs
+    i2c_master_send(0xF8); //set G0-3 as outputs, G4-7 as inputs
     i2c_master_stop(); //make the stop bit
 }
 
 void setExpander(char pin, char level){
     i2c_master_start(); //make the start bit
-    i2c_master_send((ADDRESS << 1) | 0);
+    i2c_master_send(((ADDRESS << 1) | 0));
     i2c_master_send(0x09); //write to the GPIO register
     i2c_master_send(level << pin); //write the desired level to the desired pin
     i2c_master_stop(); //make the stop bit
@@ -59,10 +59,10 @@ void setExpander(char pin, char level){
 
 char getExpander(){
     i2c_master_start(); //make the start bit
-    i2c_master_send((ADDRESS << 1) | 0); //write
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
     i2c_master_send(0x09); //write to the GPIO register
     i2c_master_restart(); //make the restart bit
-    i2c_master_send((ADDRESS << 1) | 1); //read
+    i2c_master_send(((ADDRESS << 1) | 1)); //read
     char r = i2c_master_recv(); //save the value returned
     i2c_master_ack(1); //make the ack so the slave knows we got it
     i2c_master_stop(); //make the stop bit
@@ -91,21 +91,24 @@ int main() {
 //    LATAbits.LATA4 = 1; //set A4 high to turn LED on at start
     
     //Set up i2c
-    i2c_master_setup();
     ANSELBbits.ANSB2 = 0; //turn SCL2 and SDA2 pins to be not analog inputs
     ANSELBbits.ANSB3 = 0; 
+    i2c_master_setup();
+    initExpander(); //set Expander IO pins
     
     __builtin_enable_interrupts();
     
     unsigned char r; //read byte from expander
     setExpander(0, 0); //start LED pin low
+    setExpander(1, 1); //test
     while(1) {
-	    r = getExpander();
-        if((r >> 7) == 0){
-            setExpander(0, 1); //set LED pin high
-        }
-        else{
-            setExpander(0, 0); //set LED pin low
-        }
+//	    r = getExpander();
+//        if(((r >> 7) & 0x01) == 0){
+//            setExpander(0, 1); //set LED pin high
+//        }
+//        else{
+//            setExpander(0, 0); //set LED pin low
+//        }
+        ;//test
     }
 }

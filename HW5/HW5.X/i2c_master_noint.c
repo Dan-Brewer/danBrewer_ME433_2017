@@ -1,3 +1,4 @@
+#include<xc.h> 
 // I2C Master utilities, 100 kHz, using polling rather than interrupts
 // The functions must be called in the correct order as per the I2C protocol
 // Change I2C1 to the I2C channel you are using
