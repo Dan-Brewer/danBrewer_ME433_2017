@@ -53,6 +53,10 @@ void drawChar(unsigned short x, unsigned short y, char c, unsigned short color){
             if((((ASCII[c - 0x20][i]) >> j) & 0x1) == 1){
                 LCD_drawPixel((x+i), (y+j), color);
             }
+            else{
+                LCD_drawPixel((x+i), (y+j), BACKGROUND);
+
+            }
         }
     }
 }
@@ -65,6 +69,18 @@ void drawString(unsigned short x, unsigned short y, char *message, unsigned shor
         i++;
         xinc = xinc + 5; //draw next character after current
     }
+}
+
+void drawBar(unsigned short x, unsigned short y, unsigned short length, unsigned short color){
+    int i = 0;
+    for(i; i < (129 - x); i++){
+        if((i + x) < (length + x)){
+            LCD_drawPixel((i + x), y, color);
+        }
+        else{
+            LCD_drawPixel((i + x), y, BACKGROUND);
+        }
+    } 
 }
 
 int main() {
@@ -92,12 +108,30 @@ int main() {
     __builtin_enable_interrupts();
     LCD_init(); //initialize LCD
     LCD_clearScreen(BACKGROUND); //test red
-    char message[10];
-    sprintf(message, "hyraxe");
-    drawString(10, 10, message, 0xFFFF); //test string
+    unsigned short i = 0;
+    int counter;
+    unsigned short FPS; 
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		  // remember the core timer runs at half the CPU speed
-        ;
+        char message[10];
+        sprintf(message, "Hello world %d!    ", i);
+        drawString(28, 32, message, 0xFFFF); 
+        drawBar(28, 50, i, 0xFFFF); 
+        i++;
+        if(i > 100){
+            i = 0;
+        }
+        _CP0_SET_COUNT(0);
+        counter = 0;
+        while(_CP0_GET_COUNT() < 4800000){ //5 hz wait and FPS test
+            sprintf(message, "                         "); //25 spaces (full width)
+            drawString(1, 100, message, 0xFFFF); //fps test string
+            counter++;
+        }
+        FPS = counter*5;
+        counter = 0;
+        sprintf(message, "FPS: %d     ", FPS);
+        drawString(28, 75, message, 0xFFFF); //Display FPS
     }
 }
