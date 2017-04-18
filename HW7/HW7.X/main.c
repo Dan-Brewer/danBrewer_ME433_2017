@@ -85,6 +85,32 @@ void I2C_read_multiple(unsigned char *data){ //arguments stripped for this assig
     i2c_master_stop(); //make the stop bit
 }
 
+void drawAccBar(signed short length, int xy, unsigned short color){
+    signed short dist;
+    dist = (((float)length)/16384)*50;
+    
+    int i = 0;
+    for(i; i < 129; i++){
+        if(((dist < 0) && ((i > (dist + 60)) && (i < 60))) || ((dist > 0) &&((i < (dist + 60)) && (i > 60)))){ //checking where to draw line
+            if(xy == 0){
+                LCD_drawPixel(i, 60, color);
+            }
+            else{
+                LCD_drawPixel(60, i, color);
+            }
+        }
+        else{
+            if(xy == 0){
+                LCD_drawPixel(i, 60, 0xF800);
+            }
+            else{
+                LCD_drawPixel(60, i, 0xF800);
+            }
+        }
+    } 
+}
+
+
 int main() {
     
     __builtin_disable_interrupts();
@@ -140,7 +166,8 @@ int main() {
         }
 //        sprintf(message, "%d     ", dataP[4]);
 //        drawString(50, 50, message, 0xFFFF); //draw aX for test
-        
+        drawAccBar(dataP[4], 0, 0xFFFF); //draw aX bar
+        drawAccBar(dataP[5], 1, 0xFFFF); //draw aY bar
         _CP0_SET_COUNT(0);
         while(_CP0_GET_COUNT() < 4800000){ //5 hz wait
             ;
