@@ -40,28 +40,21 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 //Constants
-const char ADDRESS = 0xD5; //address of accelerometer
+const char ADDRESS = 0b1101011; //address of accelerometer
 const unsigned short BACKGROUND = 0xF800; //define background color
 
 void initAcc(){
     //Set IO for pins
     i2c_master_start(); //make the start bit
     i2c_master_send(((ADDRESS << 1) | 0)); //write
-    i2c_master_send(0x00); //write to the IODIR pin
-    i2c_master_send(0xF8); //set G0-3 as outputs, G4-7 as inputs
+    i2c_master_send(0x10); //write to the CTRL1_XL register
+    i2c_master_send(0b10000010); //set sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
     i2c_master_stop(); //make the stop bit
-}
-
-unsigned char getAcc(){
     i2c_master_start(); //make the start bit
     i2c_master_send(((ADDRESS << 1) | 0)); //write
-    i2c_master_send(0x09); //write to the GPIO register
-    i2c_master_restart(); //make the restart bit
-    i2c_master_send(((ADDRESS << 1) | 1)); //read
-    unsigned char r = i2c_master_recv(); //save the value returned
-    i2c_master_ack(1); //make the ack so the slave knows we got it
+    i2c_master_send(0x11); //write to the CTRL2_G register
+    i2c_master_send(0b10001000); //set sample rate 1.66 kHz, 1000dps sensitivity
     i2c_master_stop(); //make the stop bit
-    return r;
 }
 
 unsigned char getWAI(){
@@ -74,6 +67,22 @@ unsigned char getWAI(){
     i2c_master_ack(1); //make the ack so the slave knows we got it
     i2c_master_stop(); //make the stop bit
     return r;
+}
+
+void I2C_read_multiple(unsigned char *data){ //arguments stripped for this assignment
+    i2c_master_start(); //make the start bit
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
+    i2c_master_send(0x20); //write to the OUT_TEMP_L register
+    i2c_master_restart(); // make the restart bit
+    i2c_master_send(((ADDRESS << 1) | 1)); //read
+    int i = 0;
+    for(i; i < 13; i++){
+        data[i] = i2c_master_recv(); //save value returned
+        i2c_master_ack(0); //keep reading
+    }
+    data[13] = i2c_master_recv(); //save value returned
+    i2c_master_ack(1); //stop reading
+    i2c_master_stop(); //make the stop bit
 }
 
 int main() {
@@ -105,22 +114,36 @@ int main() {
     ANSELBbits.ANSB2 = 0; //turn SCL2 and SDA2 pins to be not analog inputs
     ANSELBbits.ANSB3 = 0; 
     i2c_master_setup();
-//    initAcc(); //set accelerometer registers
+    initAcc(); //set accelerometer registers
    
     __builtin_enable_interrupts();
+        
+    //Test who am i 
+//    unsigned char r = 0;
+//    r = getWAI();
+//    if(r == 0b01101001){
+//        drawChar(50, 50, 'Y', 0xFFFF);
+//    }
+//    
     
-    unsigned char r = 0;
-    r = getWAI();
-    if(r == 105){
-        drawChar(50, 50, 'Y', 0xFFFF);
-    }
-    else if(r == 0){
-        drawChar(50, 50, 'N', 0xFFFF);
-    }
-    else{
-        drawChar(50, 50, r, 0xFFFF);
-    }
+    unsigned char datain[14];
+    unsigned char message[100];
+    signed short dataP[7]; //processed data (temp, gX, gY, gZ, aX, aY, aZ)
+    int i;
     while(1) {
-	    ;
+	    I2C_read_multiple(datain);
+        i = 0;
+        for(i; i < 7; i++){
+            dataP[i] = datain[2*i + 1];
+            dataP[i] = (dataP[i] << 8) | datain[2*i];
+            dataP[i] = dataP[i]; //divide by 2^8
+        }
+//        sprintf(message, "%d     ", dataP[4]);
+//        drawString(50, 50, message, 0xFFFF); //draw aX for test
+        
+        _CP0_SET_COUNT(0);
+        while(_CP0_GET_COUNT() < 4800000){ //5 hz wait
+            ;
+        }
     }
 }
