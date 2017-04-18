@@ -1,6 +1,7 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-#include"ILI9163C.h"
+#include "i2c_master_noint.h" //i2c functions
+#include"ILI9163C.h" //LED functions
 #include<stdio.h>
 
 // DEVCFG0
@@ -38,11 +39,45 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
-
+//Constants
+const char ADDRESS = 0xD5; //address of accelerometer
 const unsigned short BACKGROUND = 0xF800; //define background color
 
-int main() {
+void initAcc(){
+    //Set IO for pins
+    i2c_master_start(); //make the start bit
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
+    i2c_master_send(0x00); //write to the IODIR pin
+    i2c_master_send(0xF8); //set G0-3 as outputs, G4-7 as inputs
+    i2c_master_stop(); //make the stop bit
+}
 
+unsigned char getAcc(){
+    i2c_master_start(); //make the start bit
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
+    i2c_master_send(0x09); //write to the GPIO register
+    i2c_master_restart(); //make the restart bit
+    i2c_master_send(((ADDRESS << 1) | 1)); //read
+    unsigned char r = i2c_master_recv(); //save the value returned
+    i2c_master_ack(1); //make the ack so the slave knows we got it
+    i2c_master_stop(); //make the stop bit
+    return r;
+}
+
+unsigned char getWAI(){
+    i2c_master_start(); //make the start bit
+    i2c_master_send(((ADDRESS << 1) | 0)); //write
+    i2c_master_send(0x0F); //write to the WHO_AM_I register
+    i2c_master_restart(); //make the restart bit
+    i2c_master_send(((ADDRESS << 1) | 1)); //read
+    unsigned char r = i2c_master_recv(); //save the value returned
+    i2c_master_ack(1); //make the ack so the slave knows we got it
+    i2c_master_stop(); //make the stop bit
+    return r;
+}
+
+int main() {
+    
     __builtin_disable_interrupts();
 
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
@@ -61,35 +96,31 @@ int main() {
 //    TRISAbits.TRISA4 = 0; //Set A4 to output for LED
 //    TRISBbits.TRISB4 = 1; //Set B4 to input for user button 
 //    LATAbits.LATA4 = 1; //set A4 high to turn LED on at start
-//    
+    
     SPI1_init(); //initialize SPI pins
-    __builtin_enable_interrupts();
     LCD_init(); //initialize LCD
     LCD_clearScreen(BACKGROUND); //test red
-    unsigned short i = 0;
-    int counter;
-    unsigned short FPS; 
+    
+    //Set up i2c
+    ANSELBbits.ANSB2 = 0; //turn SCL2 and SDA2 pins to be not analog inputs
+    ANSELBbits.ANSB3 = 0; 
+    i2c_master_setup();
+//    initAcc(); //set accelerometer registers
+   
+    __builtin_enable_interrupts();
+    
+    unsigned char r = 0;
+    r = getWAI();
+    if(r == 105){
+        drawChar(50, 50, 'Y', 0xFFFF);
+    }
+    else if(r == 0){
+        drawChar(50, 50, 'N', 0xFFFF);
+    }
+    else{
+        drawChar(50, 50, r, 0xFFFF);
+    }
     while(1) {
-	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-		  // remember the core timer runs at half the CPU speed
-        char message[10];
-        sprintf(message, "Hello world %d!    ", i);
-        drawString(28, 32, message, 0xFFFF); 
-        drawBar(28, 50, i, 0xFFFF); 
-        i++;
-        if(i > 100){
-            i = 0;
-        }
-        _CP0_SET_COUNT(0);
-        counter = 0;
-        while(_CP0_GET_COUNT() < 4800000){ //5 hz wait and FPS test
-            sprintf(message, "                         "); //25 spaces (full width)
-            drawString(1, 100, message, 0xFFFF); //fps test string
-            counter++;
-        }
-        FPS = counter*5;
-        counter = 0;
-        sprintf(message, "FPS: %d     ", FPS);
-        drawString(28, 75, message, 0xFFFF); //Display FPS
+	    ;
     }
 }
