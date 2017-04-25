@@ -51,7 +51,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include <stdio.h>
 #include <xc.h>
-#include "i2c_master_noint.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -292,7 +291,7 @@ bool APP_StateReset(void) {
 
 //Constants
 const char ADDRESS = 0b1101011; //address of accelerometer
-const unsigned short BACKGROUND = 0xF800; //define background color
+static unsigned char AccData[14]; //accelerometer data 
 
 void initAcc() {
     //Set IO for pins
@@ -306,18 +305,6 @@ void initAcc() {
     i2c_master_send(0x11); //write to the CTRL2_G register
     i2c_master_send(0b10001000); //set sample rate 1.66 kHz, 1000dps sensitivity
     i2c_master_stop(); //make the stop bit
-}
-
-unsigned char getWAI() {
-    i2c_master_start(); //make the start bit
-    i2c_master_send(((ADDRESS << 1) | 0)); //write
-    i2c_master_send(0x0F); //write to the WHO_AM_I register
-    i2c_master_restart(); //make the restart bit
-    i2c_master_send(((ADDRESS << 1) | 1)); //read
-    unsigned char r = i2c_master_recv(); //save the value returned
-    i2c_master_ack(1); //make the ack so the slave knows we got it
-    i2c_master_stop(); //make the stop bit
-    return r;
 }
 
 void I2C_read_multiple(unsigned char *data) { //arguments stripped for this assignment
@@ -460,8 +447,10 @@ void APP_Tasks(void) {
             /* Check if a character was received or a switch was pressed.
              * The isReadComplete flag gets updated in the CDC event handler. */
 
-            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 5)) {
-                appData.state = APP_STATE_SCHEDULE_WRITE;
+            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 100)) { //changed 5 to 100
+                if(appData.readBuffer[0] == 'r'){
+                    appData.state = APP_STATE_SCHEDULE_WRITE;
+                }
             }
 
             break;
@@ -478,9 +467,28 @@ void APP_Tasks(void) {
             appData.writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
-
-            len = sprintf(dataOut, "%d\r\n", i);
-            i++;
+            
+            static unsigned char datain[14];
+            static signed short dataP[7]; //processed data (temp, gX, gY, gZ, aX, aY, aZ)
+            static int i;
+            static int counter=0;
+            
+            counter++;
+            if(counter > 101){
+                counter = 0;
+                appData.readBuffer[0] = 'a'; //master coder here
+            }
+            
+            I2C_read_multiple(datain);
+            i = 0;
+            for (i; i < 7; i++) {
+                dataP[i] = datain[2 * i + 1];
+                dataP[i] = (dataP[i] << 8) | datain[2 * i];
+                dataP[i] = dataP[i]; //divide by 2^8
+            }
+            
+            len = sprintf(dataOut, "Index: %d %d %d %d %d %d\r\n", dataP[4], dataP[5], dataP[6], dataP[1], dataP[2], dataP[3]); //changed i to DataP
+            
             if (appData.isReadComplete) {
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle,
