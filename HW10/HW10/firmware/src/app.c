@@ -323,29 +323,53 @@ void I2C_read_multiple(unsigned char *data) { //arguments stripped for this assi
     i2c_master_stop(); //make the stop bit
 }
 
-signed short IIR(float a, float b, signed short new_data){
+signed short IIR(float a, float b, signed short new_data) {
     static float old_ave = 0;
-    old_ave = a*old_ave + b*((float)new_data);
-    return ((signed short)(old_ave));
+    old_ave = a * old_ave + b * ((float) new_data);
+    return ((signed short) (old_ave));
 }
 
-signed short MAF(signed short new_data){
+signed short MAF(signed short new_data) {
     int n = 8;
     static float q[8]; //8 is hard coded to avoid errors, static should initialize as 0
     static i = 0;
     q[i] = new_data;
     i++;
-    if(i > n){
+    if (i == n) {
         i = 0;
     }
     int k = 0;
     float sum = 0;
-    for(k; k < n; k++){
+    for (k; k < n; k++) {
         sum = sum + q[k];
     }
-    sum = (signed short)(sum/n);
+    sum = (signed short)(sum / n);
     return sum;
 }
+
+signed short FIR(signed short new_data) {
+    int n = 8;
+    static float q[8]; //8 is hard coded to avoid errors, static should initialize as 0
+    static i = 0;
+    float weights[8] = {0.0199, 0.0645, 0.1664, 0.2493, 0.2483, 0.1664, 0.0645, 0.0199}; //chosen using fir1(7, 0.05)
+    q[i] = new_data;
+    i++;
+    if (i == n) {
+        i = 0;
+    }
+    int k = 0;
+    float sum = 0;
+    for (k; k < n; k++) {
+        if ((i + k) < n) {
+            sum = sum + q[i + k] * weights[k];
+        } else {
+            sum = sum + q[i + k - n] * weights[k];
+        }
+    }
+    sum = (signed short)sum;
+    return sum;
+}
+
 /*******************************************************************************
   Function:
     void APP_Initialize ( void )
@@ -510,20 +534,19 @@ void APP_Tasks(void) {
                 dataP[i] = dataP[i]; //divide by 2^8
             }
 
-            len = sprintf(dataOut, "%d %d %d\r\n", dataP[4], IIR(0.7, 0.3, dataP[4]), MAF(dataP[4])); //aX, IIR, IIR(0.5, 0.5, dataP[4])
-//            if (appData.isReadComplete) {
-//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-//                        &appData.writeTransferHandle,
-//                        appData.readBuffer, 1,
-//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-              if(appData.readBuffer[0] == 'r'){ //modified to send data to matlab
-                  
+            len = sprintf(dataOut, "%d %d %d %d\r\n", dataP[4], IIR(0.7, 0.3, dataP[4]), MAF(dataP[4]), FIR(dataP[4])); //aX
+            //            if (appData.isReadComplete) {
+            //                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+            //                        &appData.writeTransferHandle,
+            //                        appData.readBuffer, 1,
+            //                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+            if (appData.readBuffer[0] == 'r') { //modified to send data to matlab
+
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
                 startTime = _CP0_GET_COUNT();
-            }
-            else{
+            } else {
                 dataOut[0] = 0;
                 len = 1;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
