@@ -329,6 +329,23 @@ signed short IIR(float a, float b, signed short new_data){
     return ((signed short)(old_ave));
 }
 
+signed short MAF(signed short new_data){
+    int n = 8;
+    static float q[8]; //8 is hard coded to avoid errors, static should initialize as 0
+    static i = 0;
+    q[i] = new_data;
+    i++;
+    if(i > n){
+        i = 0;
+    }
+    int k = 0;
+    float sum = 0;
+    for(k; k < n; k++){
+        sum = sum + q[k];
+    }
+    sum = (signed short)(sum/n);
+    return sum;
+}
 /*******************************************************************************
   Function:
     void APP_Initialize ( void )
@@ -493,7 +510,7 @@ void APP_Tasks(void) {
                 dataP[i] = dataP[i]; //divide by 2^8
             }
 
-            len = sprintf(dataOut, "%d %d\r\n", dataP[4], IIR(0.5, 0.5, dataP[4])); //aX, IIR, IIR(0.5, 0.5, dataP[4])
+            len = sprintf(dataOut, "%d %d %d\r\n", dataP[4], IIR(0.7, 0.3, dataP[4]), MAF(dataP[4])); //aX, IIR, IIR(0.5, 0.5, dataP[4])
 //            if (appData.isReadComplete) {
 //                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
 //                        &appData.writeTransferHandle,
