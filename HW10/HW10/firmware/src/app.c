@@ -493,14 +493,14 @@ void APP_Tasks(void) {
                 dataP[i] = dataP[i]; //divide by 2^8
             }
 
-            len = sprintf(dataOut, "Index: %d %d %d %d %d %d\r\n", dataP[4], dataP[5], dataP[6], dataP[1], dataP[2], dataP[3]); //changed i to DataP
-
-            if (appData.isReadComplete) {
-                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle,
-                        appData.readBuffer, 1,
-                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-            } else if(appData.readBuffer[0] == 'r'){
+            len = sprintf(dataOut, "%d %d\r\n", dataP[4], IIR(0.5, 0.5, dataP[4])); //aX, IIR, IIR(0.5, 0.5, dataP[4])
+//            if (appData.isReadComplete) {
+//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+//                        &appData.writeTransferHandle,
+//                        appData.readBuffer, 1,
+//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+              if(appData.readBuffer[0] == 'r'){ //modified to send data to matlab
+                  
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
