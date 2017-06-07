@@ -53,10 +53,23 @@ int main() {
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0;
 
-    // do your TRIS and LAT commands here
-    TRISAbits.TRISA4 = 0; //Set A4 to output for LED
-    TRISBbits.TRISB4 = 1; //Set B4 to input for user button
-    LATAbits.LATA4 = 1; //set A4 high to turn LED on at start
+    // do your TRIS and LAT commands here MODIFIED FOR MOTOR TEST
+    TRISBbits.TRISB2 = 0; //Set B2 to output for Motor 2
+    TRISBbits.TRISB3 = 0; //Set B3 to output for Motor 2
+    TRISBbits.TRISB14 = 0; //Set A4 to output for Motor 1
+    TRISBbits.TRISB15 = 0; //Set B4 to input for Motor 1
+    
+    
+    LATBbits.LATB14 = 1; //set A4 high to turn LED on at start
+    LATBbits.LATB15 = 0; //get motor 1 running
+    
+    LATBbits.LATB2 = 1; //get motor 2 running
+    LATBbits.LATB3 = 1; //get motor 2 running
+    
+    TRISAbits.TRISA4 = 0; //led
+    TRISBbits.TRISB4 = 1; // user button
+    
+    LATAbits.LATA4 = 1; //led on
 
     __builtin_enable_interrupts();
 
